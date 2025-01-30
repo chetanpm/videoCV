@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chetan PM - PhD Application</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div class="environment-glow"></div>
+    
+    <main class="container">
+        <div class="video-container">
+            <div class="video-wrapper">
+                <video class="immersive-video" playsinline>
+                    <source src="assets/video/chetanpm_exoskeleton.mp4" type="video/mp4">
+                    <track src="assets/video/captions.vtt" kind="subtitles" srclang="en" label="English" default>
+                </video>
+                
+                <div class="video-controls">
+                    <button class="control-btn play-pause">
+                        <span class="play-icon">▶</span>
+                        <span class="pause-icon">❚❚</span>
+                    </button>
+                    
+                    <div class="volume-container">
+                        <button class="control-btn volume-btn">
+                            <span class="volume-icon">🔊</span>
+                            <span class="mute-icon">🔇</span>
+                        </button>
+                        <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
+                    </div>
+                    
+                    <button class="control-btn cc-btn">CC</button>
+                </div>
+            </div>
+            
+            <div class="download-section">
+                <a href="assets/video/chetanpm_exoskeleton.mp4" download class="download-btn">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                    </svg>
+                    Download Video
+                </a>
+                <a href="assets/cv/cv.pdf" download class="download-btn">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6z"/>
+                    </svg>
+                    Download CV
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
