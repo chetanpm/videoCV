@@ -1,74 +1,71 @@
 document.addEventListener('DOMContentLoaded', () => {
     const video = document.querySelector('.immersive-video');
     const controls = document.querySelector('.video-controls');
-    const playPauseBtn = controls.querySelector('.play-pause');
-    const volumeBtn = controls.querySelector('.volume-btn');
-    const volumeSlider = controls.querySelector('.volume-slider');
-    const ccBtn = controls.querySelector('.cc-btn');
-    const textTracks = video.textTracks[0];
-    
-    // Initialize
-    video.volume = 0.5;
-    volumeSlider.value = 0.5;
-    textTracks.mode = 'hidden';
+    const playPauseBtn = document.querySelector('.play-pause');
+    const bigPlayBtn = document.querySelector('.big-play-btn');
+    const seekSlider = document.querySelector('.seek-slider');
+    const videoContainer = document.querySelector('.video-container');
+    let controlsTimeout;
 
-    // Play/Pause
-    playPauseBtn.addEventListener('click', () => {
+    // Initialize captions
+    const textTracks = video.textTracks[0];
+    textTracks.mode = 'showing';
+
+    // Initialize controls visibility
+    const hideControls = () => controls.classList.add('hidden');
+    const showControls = () => {
+        controls.classList.remove('hidden');
+        resetControlsTimeout();
+    };
+
+    const resetControlsTimeout = () => {
+        clearTimeout(controlsTimeout);
+        controlsTimeout = setTimeout(hideControls, 1500);
+    };
+
+    // Play/Pause functionality
+    const togglePlay = () => {
         if (video.paused) {
             video.play();
-            controls.classList.add('playing');
+            bigPlayBtn.style.display = 'none';
         } else {
             video.pause();
-            controls.classList.remove('playing');
+            bigPlayBtn.style.display = 'flex';
         }
+    };
+    
+    const infoCard = document.querySelector('.info-card');
+    const infoIndicator = document.querySelector('.info-indicator');
+    
+    infoIndicator.addEventListener('click', () => {
+        infoCard.classList.toggle('visible');
     });
+    
+    // Event listeners
+    bigPlayBtn.addEventListener('click', togglePlay);
+    playPauseBtn.addEventListener('click', togglePlay);
 
-    // Update play/pause state
     video.addEventListener('play', () => {
-        controls.classList.add('playing');
-        controls.style.opacity = '0';
+        resetControlsTimeout();
     });
 
     video.addEventListener('pause', () => {
-        controls.classList.remove('playing');
-        controls.style.opacity = '1';
+        showControls();
     });
 
-    // Volume control
-    volumeSlider.addEventListener('input', (e) => {
-        video.volume = e.target.value;
-        video.muted = e.target.value === '0';
+    videoContainer.addEventListener('mousemove', () => {
+        if (!video.paused) showControls();
     });
 
-    // Mute button
-    volumeBtn.addEventListener('click', () => {
-        video.muted = !video.muted;
-        volumeBtn.classList.toggle('muted', video.muted);
-    });
-    
-    document.addEventListener("DOMContentLoaded", function () {
-        const video = document.getElementById("cvVideo");
-    
-        // Enable subtitles by default
-        const tracks = video.textTracks;
-        if (tracks.length > 0) {
-            tracks[0].mode = "showing"; // "showing" makes the captions visible
-        }
+    // Seek functionality
+    seekSlider.addEventListener('input', (e) => {
+        video.currentTime = (e.target.value / 100) * video.duration;
     });
 
-    // CC toggle
-    ccBtn.addEventListener('click', () => {
-        textTracks.mode = textTracks.mode === 'showing' ? 'hidden' : 'showing';
-        ccBtn.classList.toggle('active');
+    video.addEventListener('timeupdate', () => {
+        seekSlider.value = (video.currentTime / video.duration) * 100;
     });
 
-    // Auto-hide controls when playing
-    video.addEventListener('mousemove', () => {
-        if (!video.paused) {
-            controls.style.opacity = '1';
-            setTimeout(() => {
-                if (!video.paused) controls.style.opacity = '0';
-            }, 2000);
-        }
-    });
+    // Initial controls timeout
+    resetControlsTimeout();
 });
